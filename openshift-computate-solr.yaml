@@ -2,9 +2,9 @@ apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   annotations:
-    description: 'Solr for search in the cloud. '
+    description: 'Solr for search in the cloud for computate.org. '
     iconClass: icon-solr
-    openshift.io/display-name: Solr
+    openshift.io/display-name: Solr for computate.org
     tags: solr
     version: 7.1.0
   creationTimestamp: '2019-05-14T22:12:00Z'

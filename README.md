@@ -1,4 +1,5 @@
 # computate-solr
+```bash
 sudo mkdir /usr/local/src/computate-solr
 sudo chown $USER: /usr/local/src/computate-solr/
 git clone git@github.com:computate/computate-solr.git /usr/local/src/computate-solr/
@@ -10,4 +11,4 @@ git add -i
 git commit
 git push
 oc replace --force -f "https://raw.githubusercontent.com/computate/computate-solr/master/openshift-computate-solr.json"
-
+```

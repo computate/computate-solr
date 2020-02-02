@@ -13,6 +13,7 @@ $APP_SRV/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_SRV/server/solr/configsets
 $APP_SRV/bin/solr start -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT
 
 # computate-solr
+```bash
 sudo mkdir /usr/local/src/computate-solr
 sudo chown $USER: /usr/local/src/computate-solr/
 git clone git@github.com:computate/computate-solr.git /usr/local/src/computate-solr/
@@ -24,4 +25,4 @@ git add -i
 git commit
 git push
 oc replace --force -f "https://raw.githubusercontent.com/computate/computate-solr/master/openshift-computate-solr.json"
-
+```

@@ -10,15 +10,12 @@ ENV APP_NAME=solr \
     APP_SRC=/usr/local/src/solr \
     APP_SRV=/srv/solr \
     USER_HOME=/home/solr \
-    JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+    JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk \
     ANT_REPO=https://github.com/apache/ant.git \
     ANT_TAG=rel/1.10.7 \
     ANT_SRC=/usr/local/src/ant \
     ANT_OPT=/opt/ant \
-    IVY_REPO=https://github.com/apache/ant-ivy.git \
-    IVY_TAG=2.4.0 \
-    IVY_SRC=/usr/local/src/ant-ivy \
-    IVY_OPT=/opt/ant-ivy \
+    IVY_TAG=2.3.0 \
     COMPUTATE_REPO=https://github.com/computate/computate.git \
     COMPUTATE_SRC=/usr/local/src/computate \
     SOLR_CONFIG=computate \
@@ -28,15 +25,15 @@ ENV APP_NAME=solr \
     ZK_HOSTNAME=localhost \
     ZK_CLIENT_PORT=8080 \
     ZK_ADMIN_PORT=8081 \
-    INSTALL_PKGS="java-1.8.0-openjdk ivy lsof maven git"
+    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git"
 
 EXPOSE $SOLR_PORT
 
 RUN useradd -m -d $USER_HOME -s /bin/bash -U $USER_NAME
 RUN usermod -m -d $USER_HOME $USER_NAME
 RUN yum install -y $INSTALL_PKGS && yum clean all
-#RUN install -d -o $USER_NAME -g $USER_NAME $IVY_SRC
-#RUN install -d -o $USER_NAME -g $USER_NAME $IVY_OPT
+RUN install -d -o $USER_NAME -g $USER_NAME $IVY_SRC
+RUN install -d -o $USER_NAME -g $USER_NAME $IVY_OPT
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRC
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRV
 RUN install -d -o $USER_NAME -g $USER_NAME $COMPUTATE_SRC
@@ -51,8 +48,8 @@ RUN ./bootstrap.sh
 RUN bootstrap/bin/ant -f fetch.xml -Ddest=optional
 RUN ./build.sh -Ddist.dir=$ANT_OPT dist
 RUN ln -s /opt/ant/bin/ant /usr/bin/ant
-WORKDIR $IVY_SRC
-RUN ant
+RUN install -d /home/solr/.ant/lib
+RUN curl https://repo1.maven.org/maven2/org/apache/ivy/ivy/$IVY_TAG/ivy-$IVY_TAG.jar -o /home/solr/.ant/lib/ivy-$IVY_TAG.jar
 WORKDIR $APP_SRC/solr
 RUN ant ivy-bootstrap
 RUN ant package

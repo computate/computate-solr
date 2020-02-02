@@ -6,7 +6,7 @@ ENV APP_NAME=solr \
     APP_VERSION=8.4.1 \
     USER_NAME=solr \
     APP_REPO=https://github.com/apache/lucene-solr.git \
-    APP_TAG=releases/lucene-solr/7.1.0 \
+    APP_TAG=releases/lucene-solr/8.4.1 \
     APP_SRC=/usr/local/src/solr \
     APP_SRV=/srv/solr \
     USER_HOME=/home/solr \
@@ -32,15 +32,12 @@ EXPOSE $SOLR_PORT
 RUN useradd -m -d $USER_HOME -s /bin/bash -U $USER_NAME
 RUN usermod -m -d $USER_HOME $USER_NAME
 RUN yum install -y $INSTALL_PKGS && yum clean all
-RUN install -d -o $USER_NAME -g $USER_NAME $IVY_SRC
-RUN install -d -o $USER_NAME -g $USER_NAME $IVY_OPT
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRC
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRV
 RUN install -d -o $USER_NAME -g $USER_NAME $COMPUTATE_SRC
 RUN install -d -o $USER_NAME -g $USER_NAME $SOLR_DATA
 USER $USER_NAME
 RUN git clone $ANT_REPO $ANT_SRC --single-branch --branch $ANT_TAG --depth 1
-RUN git clone $IVY_REPO $IVY_SRC --single-branch --branch $IVY_TAG --depth 1
 RUN git clone $APP_REPO $APP_SRC --single-branch --branch $APP_TAG --depth 1
 RUN git clone $COMPUTATE_REPO $COMPUTATE_SRC
 WORKDIR $ANT_SRC

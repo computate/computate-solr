@@ -6,7 +6,7 @@ ENV APP_NAME=solr \
     APP_VERSION=8.4.1 \
     USER_NAME=solr \
     APP_REPO=https://github.com/apache/lucene-solr.git \
-    APP_TAG=releases/lucene-solr/7.1.0 \
+    APP_TAG=releases/lucene-solr/8.4.1 \
     APP_SRC=/usr/local/src/solr \
     APP_SRV=/srv/solr \
     USER_HOME=/home/solr \
@@ -15,10 +15,7 @@ ENV APP_NAME=solr \
     ANT_TAG=rel/1.10.7 \
     ANT_SRC=/usr/local/src/ant \
     ANT_OPT=/opt/ant \
-    IVY_REPO=https://github.com/apache/ant-ivy.git \
-    IVY_TAG=2.4.0 \
-    IVY_SRC=/usr/local/src/ant-ivy \
-    IVY_OPT=/opt/ant-ivy \
+    IVY_TAG=2.3.0 \
     COMPUTATE_REPO=https://github.com/computate/computate.git \
     COMPUTATE_SRC=/usr/local/src/computate \
     SOLR_CONFIG=computate \
@@ -28,22 +25,19 @@ ENV APP_NAME=solr \
     ZK_HOSTNAME=localhost \
     ZK_CLIENT_PORT=8080 \
     ZK_ADMIN_PORT=8081 \
-    INSTALL_PKGS="java-1.8.0-openjdk ivy lsof maven git"
+    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git"
 
 EXPOSE $SOLR_PORT
 
 RUN useradd -m -d $USER_HOME -s /bin/bash -U $USER_NAME
 RUN usermod -m -d $USER_HOME $USER_NAME
 RUN yum install -y $INSTALL_PKGS && yum clean all
-#RUN install -d -o $USER_NAME -g $USER_NAME $IVY_SRC
-#RUN install -d -o $USER_NAME -g $USER_NAME $IVY_OPT
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRC
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRV
 RUN install -d -o $USER_NAME -g $USER_NAME $COMPUTATE_SRC
 RUN install -d -o $USER_NAME -g $USER_NAME $SOLR_DATA
 USER $USER_NAME
 RUN git clone $ANT_REPO $ANT_SRC --single-branch --branch $ANT_TAG --depth 1
-RUN git clone $IVY_REPO $IVY_SRC --single-branch --branch $IVY_TAG --depth 1
 RUN git clone $APP_REPO $APP_SRC --single-branch --branch $APP_TAG --depth 1
 RUN git clone $COMPUTATE_REPO $COMPUTATE_SRC
 WORKDIR $ANT_SRC
@@ -51,8 +45,8 @@ RUN ./bootstrap.sh
 RUN bootstrap/bin/ant -f fetch.xml -Ddest=optional
 RUN ./build.sh -Ddist.dir=$ANT_OPT dist
 RUN ln -s /opt/ant/bin/ant /usr/bin/ant
-WORKDIR $IVY_SRC
-RUN ant
+RUN install -d /home/solr/.ant/lib
+RUN curl https://repo1.maven.org/maven2/org/apache/ivy/ivy/$IVY_TAG/ivy-$IVY_TAG.jar -o /home/solr/.ant/lib/ivy-$IVY_TAG.jar
 WORKDIR $APP_SRC/solr
 RUN ant ivy-bootstrap
 RUN ant package

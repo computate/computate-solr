@@ -6,7 +6,7 @@ sudo systemctl start docker
 sudo install -o $USER -g $USER -d /usr/local/src/computate-solr
 git clone git@github.com:computate/computate-solr.git /usr/local/src/computate-solr/
 cd /usr/local/src/computate-solr
-docker build -t computate/computate-solr:latest .
+sudo docker build -t computate/computate-solr:latest .
 docker login
 docker push computate/computate-solr:latest
 git add -i

@@ -10,7 +10,7 @@ ENV APP_NAME=solr \
     APP_SRC=/usr/local/src/solr \
     APP_SRV=/srv/solr \
     USER_HOME=/home/solr \
-    JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+    JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk \
     ANT_REPO=https://github.com/apache/ant.git \
     ANT_TAG=rel/1.10.7 \
     ANT_SRC=/usr/local/src/ant \
@@ -62,7 +62,7 @@ RUN rsync -r $APP_SRV/server/solr/solr.xml $SOLR_DATA/
 RUN rm -rf $APP_SRV/example
 RUN ln -s $COMPUTATE_SRC/config/solr/server/solr/configsets/computate $APP_SRV/server/solr/configsets/computate
 RUN chmod a+x $APP_SRV/bin/*
-RUN chmod -R a+rw $APP_SRV/server
+RUN chmod -R a+rw $APP_SRV
 RUN chmod -R a+rw $COMPUTATE_SRC
 
 WORKDIR $APP_SRV

@@ -1,4 +1,4 @@
-FROM openshift/base-centos7:latest
+FROM registry.access.redhat.com/ubi8/ubi
 
 MAINTAINER Christopher Tate <computate@computate.org>
 
@@ -25,13 +25,15 @@ ENV APP_NAME=solr \
     ZK_HOSTNAME=localhost \
     ZK_CLIENT_PORT=8080 \
     ZK_ADMIN_PORT=8081 \
-    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git"
+    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git rsync"
 
 EXPOSE $SOLR_PORT
 
 RUN useradd -m -d $USER_HOME -s /bin/bash -U $USER_NAME
 RUN usermod -m -d $USER_HOME $USER_NAME
 RUN yum install -y $INSTALL_PKGS && yum clean all
+RUN install -d -o $USER_NAME -g $USER_NAME $ANT_SRC
+RUN install -d -o $USER_NAME -g $USER_NAME $ANT_OPT
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRC
 RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRV
 RUN install -d -o $USER_NAME -g $USER_NAME $COMPUTATE_SRC
@@ -44,7 +46,9 @@ WORKDIR $ANT_SRC
 RUN ./bootstrap.sh
 RUN bootstrap/bin/ant -f fetch.xml -Ddest=optional
 RUN ./build.sh -Ddist.dir=$ANT_OPT dist
+USER root
 RUN ln -s /opt/ant/bin/ant /usr/bin/ant
+USER $USER_NAME
 RUN install -d /home/solr/.ant/lib
 RUN curl https://repo1.maven.org/maven2/org/apache/ivy/ivy/$IVY_TAG/ivy-$IVY_TAG.jar -o /home/solr/.ant/lib/ivy-$IVY_TAG.jar
 WORKDIR $APP_SRC/solr

@@ -1,14 +1,13 @@
 
 # computate-solr
 ```bash
-sudo yum install -y docker
-sudo systemctl start docker
+sudo yum install -y buildah podman
 sudo install -o $USER -g $USER -d /usr/local/src/computate-solr
 git clone git@github.com:computate/computate-solr.git /usr/local/src/computate-solr/
 cd /usr/local/src/computate-solr
-sudo docker build -t computate/computate-solr:latest .
-docker login
-docker push computate/computate-solr:latest
+sudo podman build -t computate/computate-solr:latest .
+sudo podman login quay.io
+podman push computate/computate-solr:latest
 git add -i
 git commit
 git push
@@ -17,7 +16,7 @@ oc replace --force -f "https://raw.githubusercontent.com/computate/computate-sol
 
 #Useful to connect to host network. 
 
-docker run --network host -it 68e74c7d781e /bin/bash
+podman run --network host -it 68e74c7d781e /bin/bash
 
 export ZK_HOSTNAME=ctate.remote.csb
 

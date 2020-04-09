@@ -25,19 +25,14 @@ ENV APP_NAME=solr \
     ZK_HOSTNAME=localhost \
     ZK_CLIENT_PORT=8080 \
     ZK_ADMIN_PORT=8081 \
-    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git rsync"
+    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git rsync ps"
 
 EXPOSE $SOLR_PORT
 
 RUN useradd -m -d $USER_HOME -s /bin/bash -U $USER_NAME
 RUN usermod -m -d $USER_HOME $USER_NAME
 RUN yum install -y $INSTALL_PKGS && yum clean all
-RUN install -d -o $USER_NAME -g $USER_NAME $ANT_SRC
-RUN install -d -o $USER_NAME -g $USER_NAME $ANT_OPT
-RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRC
-RUN install -d -o $USER_NAME -g $USER_NAME $APP_SRV
-RUN install -d -o $USER_NAME -g $USER_NAME $COMPUTATE_SRC
-RUN install -d -o $USER_NAME -g $USER_NAME $SOLR_DATA
+RUN install -d -o $USER_NAME -g $USER_NAME $ANT_SRC $ANT_OPT $APP_SRC $APP_SRV $COMPUTATE_SRC $SOLR_DATA
 USER $USER_NAME
 RUN git clone $ANT_REPO $ANT_SRC --single-branch --branch $ANT_TAG --depth 1
 RUN git clone $APP_REPO $APP_SRC --single-branch --branch $APP_TAG --depth 1

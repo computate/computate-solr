@@ -25,7 +25,7 @@ ENV APP_NAME=solr \
     ZK_HOSTNAME=localhost \
     ZK_CLIENT_PORT=8080 \
     ZK_ADMIN_PORT=8081 \
-    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git rsync ps"
+    INSTALL_PKGS="java-1.8.0-openjdk lsof maven git rsync procps-ng"
 
 EXPOSE $SOLR_PORT
 

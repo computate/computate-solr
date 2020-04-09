@@ -1,4 +1,4 @@
-FROM openshift/base-centos7:latest
+FROM registry.access.redhat.com/ubi8/ubi
 
 MAINTAINER Christopher Tate <computate@computate.org>
 
@@ -39,6 +39,7 @@ RUN install -d -o $USER_NAME -g $USER_NAME $SOLR_DATA
 USER $USER_NAME
 RUN git clone $ANT_REPO $ANT_SRC --single-branch --branch $ANT_TAG --depth 1
 RUN git clone $APP_REPO $APP_SRC --single-branch --branch $APP_TAG --depth 1
+RUN echo "Updated Solr config version 8.4.1"
 RUN git clone $COMPUTATE_REPO $COMPUTATE_SRC
 WORKDIR $ANT_SRC
 RUN ./bootstrap.sh

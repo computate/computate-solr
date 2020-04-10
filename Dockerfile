@@ -52,7 +52,6 @@ RUN ant ivy-bootstrap
 RUN ant package
 RUN rsync -r $APP_SRC/solr/build/solr-$APP_VERSION-SNAPSHOT/ $APP_SRV/
 RUN find $APP_SRC -mindepth 1 -delete
-RUN rsync -r $APP_SRV/server/solr/solr.xml $SOLR_DATA/
 RUN rm -rf $APP_SRV/example
 RUN ln -s $COMPUTATE_SRC/config/solr/server/solr/configsets/computate $APP_SRV/server/solr/configsets/computate
 RUN chmod a+x $APP_SRV/bin/*
@@ -63,5 +62,5 @@ WORKDIR $APP_SRV
 #CMD $APP_SRV/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_SRV/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT 
 #CMD ($APP_SRV/bin/solr create_collection -c $SOLR_COLLECTION -n $SOLR_CONFIG && $APP_SRV/bin/solr start -f -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT)
 #CMD $APP_SRV/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_SRV/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT && $APP_SRV/bin/solr start -f -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT -h "$HOSTNAME"
-CMD $APP_SRV/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_SRV/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT && $APP_SRV/bin/solr start -f -s $SOLR_DATA -p $SOLR_PORT -h "$HOSTNAME"
+CMD rsync -r $APP_SRV/server/solr/solr.xml $SOLR_DATA/ && $APP_SRV/bin/solr start -f -s $SOLR_DATA -p $SOLR_PORT -h "$HOSTNAME"
 

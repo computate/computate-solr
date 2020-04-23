@@ -55,6 +55,7 @@ RUN find $APP_SRC -mindepth 1 -delete
 RUN rm -rf $APP_OPT/example
 RUN ln -s $COMPUTATE_SRC/config/solr/server/solr/configsets/computate $APP_OPT/server/solr/configsets/computate
 RUN chmod a+x $APP_OPT/bin/*
+RUN install -d -o $USER_NAME -g $USER_NAME -m a+rwx $APP_OPT/server/logs
 
 WORKDIR $APP_OPT
 #CMD $APP_OPT/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_OPT/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT 

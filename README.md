@@ -7,7 +7,7 @@ git clone git@github.com:computate/computate-solr.git /usr/local/src/computate-s
 cd /usr/local/src/computate-solr
 sudo podman build -t computate/computate-solr:latest .
 sudo podman login quay.io
-podman push computate/computate-solr:latest
+sudo podman push computate/computate-solr:latest
 git add -i
 git commit
 git push

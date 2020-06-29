@@ -48,6 +48,7 @@ RUN ln -s $COMPUTATE_SRC/config/solr/server/solr/configsets/computate $APP_OPT/s
 RUN chmod a+x $APP_OPT/bin/*
 RUN install -d -g 0 $APP_OPT/server/logs
 RUN chgrp -R 0 $ANT_SRC $ANT_OPT $APP_SRC $APP_OPT $COMPUTATE_SRC $SOLR_DATA && chmod -R g=u $ANT_SRC $ANT_OPT $APP_SRC $APP_OPT $COMPUTATE_SRC $SOLR_DATA
+COPY run-computate-solr.sh "$APP_OPT/bin/"
 
 USER 1001
 
@@ -55,5 +56,5 @@ WORKDIR $APP_OPT
 #CMD $APP_OPT/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_OPT/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT 
 #CMD ($APP_OPT/bin/solr create_collection -c $SOLR_COLLECTION -n $SOLR_CONFIG && $APP_OPT/bin/solr start -f -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT)
 #CMD $APP_OPT/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_OPT/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT && $APP_OPT/bin/solr start -f -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT -h "$HOSTNAME"
-CMD $APP_OPT/bin/solr create_core -c $SOLR_COLLECTION -d $APP_OPT/server/solr/configsets/computate; rsync $APP_OPT/server/solr/solr.xml $SOLR_DATA/ && $APP_OPT/bin/solr start -f -s $SOLR_DATA -p $SOLR_PORT -h "$HOSTNAME"
+CMD $APP_OPT/bin/run-computate-solr.sh
 

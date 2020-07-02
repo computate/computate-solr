@@ -56,5 +56,6 @@ WORKDIR $APP_OPT
 #CMD $APP_OPT/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_OPT/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT 
 #CMD ($APP_OPT/bin/solr create_collection -c $SOLR_COLLECTION -n $SOLR_CONFIG && $APP_OPT/bin/solr start -f -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT)
 #CMD $APP_OPT/bin/solr zk upconfig -n $SOLR_CONFIG -d $APP_OPT/server/solr/configsets/computate -z $ZK_HOSTNAME:$ZK_CLIENT_PORT && $APP_OPT/bin/solr start -f -c -s $SOLR_DATA -p $SOLR_PORT -z $ZK_HOSTNAME:$ZK_CLIENT_PORT -h "$HOSTNAME"
-CMD $APP_OPT/bin/run-computate-solr.sh
+#CMD $APP_OPT/bin/run-computate-solr.sh
+CMD $APP_OPT/bin/solr start -f -s $SOLR_DATA -p $SOLR_PORT -h "$HOSTNAME"
 

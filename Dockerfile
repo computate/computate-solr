@@ -3,9 +3,9 @@ FROM registry.access.redhat.com/ubi8/ubi
 MAINTAINER Christopher Tate <computate@computate.org>
 
 ENV APP_NAME=solr \
-    APP_VERSION=8.4.1 \
+    APP_VERSION=8.6.3 \
     APP_REPO=https://github.com/apache/lucene-solr.git \
-    APP_TAG=releases/lucene-solr/8.4.1 \
+    APP_TAG=releases/lucene-solr/8.6.3 \
     APP_SRC=/usr/local/src/solr \
     APP_OPT=/opt/solr \
     JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk \
